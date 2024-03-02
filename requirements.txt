@@ -1,0 +1,5 @@
+fastapi
+sqlalchemy==1.4.4
+passlib[bcrypt]
+python-jose[cryptography]
+google-api-python-client
