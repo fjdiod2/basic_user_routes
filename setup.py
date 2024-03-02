@@ -14,14 +14,10 @@ setup(
     author = "Sergey Solovyev",
     author_email = "fjdiod2@gmail.com",
     description = ("Basic sign up/sign in routes for FastAPI"),
-    license = "BSD",
-    keywords = "example documentation tutorial",
-    url = "http://packages.python.org/an_example_pypi_project",
-    packages=['an_example_pypi_project', 'tests'],
+    url = "https://github.com/fjdiod2/basic_user_routes",
+    packages=['basic_user_routes',],
     long_description=read('README'),
     classifiers=[
-        "Development Status :: 3 - Alpha",
-        "Topic :: Utilities",
-        "License :: OSI Approved :: BSD License",
+        "Development Status :: 1 - Beta",
     ],
 )
