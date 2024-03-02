@@ -1,3 +1,4 @@
+from typing import List
 import os
 from setuptools import setup
 
@@ -8,6 +9,10 @@ from setuptools import setup
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
+with io.open("requirements.txt", "r", encoding="utf-8") as req_file:
+    requires: List[str] = req_file.read().splitlines()
+
+
 setup(
     name = "basic_user_routes",
     version = "0.0.1",
@@ -15,6 +20,8 @@ setup(
     author_email = "fjdiod2@gmail.com",
     description = ("Basic sign up/sign in routes for FastAPI"),
     url = "https://github.com/fjdiod2/basic_user_routes",
+    install_requires=requires,
+    zip_safe=False,
     packages=['basic_user_routes',],
     long_description=read('README'),
     classifiers=[
