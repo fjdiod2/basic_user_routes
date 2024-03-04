@@ -11,22 +11,22 @@ from jose import ExpiredSignatureError, JWTError
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.session import sessionmaker
 
-from basic_user_routes.models import User as UserModel
+from basic_user_routes.models import UserBase
 from basic_user_routes.schemas import GoogleToken, UserBase, UserCreate, BaseUser, UserReset
 from basic_user_routes.utils import create_access_token, decode_token
 
 
 class BaseCrud(ABC):
-    def authenticate_user(self, db, email: str, password: str) -> Optional[UserModel]:
+    def authenticate_user(self, db, email: str, password: str) -> Optional[UserBase]:
         pass
 
-    def authenticate_user_google(self, db, user: BaseUser) -> Optional[UserModel]:
+    def authenticate_user_google(self, db, user: BaseUser) -> Optional[UserBase]:
         pass
 
     def create_user(self, db, user: BaseUser, service_provider: str):
         pass
 
-    def get_user_by_email(self, db, email: str) -> Optional[UserModel]:
+    def get_user_by_email(self, db, email: str) -> Optional[UserBase]:
         pass
 
     def get_password_hash(self, password: str) -> str:
