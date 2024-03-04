@@ -1,7 +1,6 @@
 from abc import ABC
-from dataclasses import dataclass
 from datetime import timedelta
-from typing import Optional, Callable
+from typing import Optional
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status, Request
 from fastapi.responses import RedirectResponse
@@ -9,8 +8,8 @@ from google.auth.transport import requests as requests_transport
 from google.oauth2 import id_token
 from jose import ExpiredSignatureError, JWTError
 from sqlalchemy.orm import Session
-from sqlalchemy.orm.session import sessionmaker
 
+from basic_user_routes.config import BaseRouterConfig
 from basic_user_routes.models import UserBase
 from basic_user_routes.schemas import GoogleToken, UserBase, UserCreate, BaseUser, UserReset
 from basic_user_routes.utils import create_access_token, decode_token
@@ -31,20 +30,6 @@ class BaseCrud(ABC):
 
     def get_password_hash(self, password: str) -> str:
         pass
-
-
-@dataclass
-class BaseRouterConfig:
-    priv_key: str
-    pub_key: str
-    crud: BaseCrud
-    api_base_url: str
-    google_client_id: str
-    send_link_email: Callable[[str, str, str, str], None]
-    get_db: Callable[[], sessionmaker]
-    prefix: str = "/internal"
-    algorithm: str = "RS256"
-    expire_limit: int = 180
 
 
 def decode_google_token(token: str, google_client_id: str):

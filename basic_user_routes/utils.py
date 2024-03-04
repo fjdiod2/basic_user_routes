@@ -5,6 +5,7 @@ from fastapi import HTTPException
 from jose import jwt
 
 from basic_user_routes.schemas import TokenData
+from basic_user_routes.config import BaseRouterConfig
 
 
 def create_access_token(priv_key: str, algo: str, data: dict, expires_delta: Union[timedelta, None] = None):
