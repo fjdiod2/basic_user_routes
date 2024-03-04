@@ -3,7 +3,7 @@ from typing import Callable
 
 from sqlalchemy.orm import sessionmaker
 
-from basic_user_routes.router import BaseCrud
+from basic_user_routes.crud import BaseCrud
 
 
 @dataclass

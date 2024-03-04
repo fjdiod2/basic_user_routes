@@ -1,6 +1,4 @@
-from abc import ABC
 from datetime import timedelta
-from typing import Optional
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status, Request
 from fastapi.responses import RedirectResponse
@@ -13,23 +11,6 @@ from basic_user_routes.config import BaseRouterConfig
 from basic_user_routes.models import UserBase
 from basic_user_routes.schemas import GoogleToken, UserBase, UserCreate, BaseUser, UserReset
 from basic_user_routes.utils import create_access_token, decode_token
-
-
-class BaseCrud(ABC):
-    def authenticate_user(self, db, email: str, password: str) -> Optional[UserBase]:
-        pass
-
-    def authenticate_user_google(self, db, user: BaseUser) -> Optional[UserBase]:
-        pass
-
-    def create_user(self, db, user: BaseUser, service_provider: str):
-        pass
-
-    def get_user_by_email(self, db, email: str) -> Optional[UserBase]:
-        pass
-
-    def get_password_hash(self, password: str) -> str:
-        pass
 
 
 def decode_google_token(token: str, google_client_id: str):
