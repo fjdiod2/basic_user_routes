@@ -46,7 +46,7 @@ def get_basic_user_router(config: BaseRouterConfig):
         db_user = config.crud.get_user_by_email(db, email=user.email)
         if db_user:
             raise HTTPException(status_code=400, detail="Email already registered")
-        config.crud.crud.create_user(db=db, user=user, service_provider="email")
+        config.crud.create_user(db=db, user=user, service_provider="email")
         confirmation_token_expires = timedelta(minutes=60 * 3)
         data = {"sub": user.email}
         link = config.api_base_url + f"/activate/{create_access_token(data, confirmation_token_expires)}"
