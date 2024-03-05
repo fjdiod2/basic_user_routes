@@ -27,7 +27,7 @@ def decode_token(token: str, config: BaseRouterConfig, is_reset=False):
     payload = jwt.decode(token, config.pub_key, algorithms=[config.algorithm])
     username: str = payload.get("sub")
     msg_type: str = payload.get("type")
-    if username is None or (msg_type != "reset" and not is_reset):
+    if username is None or (msg_type != "reset" and is_reset):
         raise credentials_exception
     token_data = TokenData(username=username)
     return token_data
