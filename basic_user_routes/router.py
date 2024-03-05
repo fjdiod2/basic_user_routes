@@ -47,9 +47,11 @@ def get_basic_user_router(config: BaseRouterConfig):
         if db_user:
             raise HTTPException(status_code=400, detail="Email already registered")
         config.crud.create_user(db=db, user=user, service_provider="email")
-        confirmation_token_expires = timedelta(minutes=60 * 3)
+        confirmation_token_expires = timedelta(minutes=config.expire_limit)
         data = {"sub": user.email}
-        link = config.api_base_url + f"/activate/{create_access_token(data, confirmation_token_expires)}"
+        token = create_access_token(priv_key=config.priv_key, algo=config.algorithm,
+                                    data=data, expires_delta=confirmation_token_expires)
+        link = config.api_base_url + f"/activate/{token}"
         background_tasks.add_task(config.send_link_email, user.email,
                                   link, "Click the link to activate your account",
                                   "Activate")
@@ -86,9 +88,10 @@ def get_basic_user_router(config: BaseRouterConfig):
         if not user_db:
             config.crud.create_user(db=db, user=BaseUser(**decoded), service_provider="google")
         access_token_expires = timedelta(minutes=config.expire_limit)
-        access_token = create_access_token(
+        access_token = create_access_token(create_access_token(
+            priv_key=config.priv_key, algo=config.algorithm,
             data={"sub": decoded["email"]}, expires_delta=access_token_expires
-        )
+        ))
         return {"access_token": access_token, "token_type": "bearer"}
 
     @router.get("/reset_password")
@@ -102,7 +105,8 @@ def get_basic_user_router(config: BaseRouterConfig):
             raise HTTPException(status_code=400, detail="Registered through google")
         reset_token_expires = timedelta(minutes=30)
         data = {"sub": email, "type": "reset"}
-        link = f"{config.api_base_url}/reset-password?t={create_access_token(data, reset_token_expires)}"
+        token = create_access_token(config.priv_key, config.algorithm, data, reset_token_expires)
+        link = f"{config.api_base_url}/reset-password?t={token}"
         background_tasks.add_task(config.send_link_email, email, link, "Click the link to reset your password",
                                   "Reset password")
         return {"status": "ok", "message": "Check email for reset link"}
@@ -132,7 +136,8 @@ def get_basic_user_router(config: BaseRouterConfig):
             raise HTTPException(status_code=400, detail="Email already activated")
         confirmation_token_expires = timedelta(minutes=60*3)
         data = {"sub": user.email}
-        link = f"{config.api_base_url}/spawner/v1/api/activate/{create_access_token(data, confirmation_token_expires)}"
+        token = create_access_token(config.priv_key, config.algorithm, data, confirmation_token_expires)
+        link = f"{config.api_base_url}/spawner/v1/api/activate/{token}"
         background_tasks.add_task(config.send_link_email, user.email, link, "Click the link to activate your account",
                                   "Activate")
         return {"status": "ok", "message": "Check your email for confirmation message"}
