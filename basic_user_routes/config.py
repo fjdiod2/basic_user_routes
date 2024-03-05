@@ -13,6 +13,7 @@ class BaseRouterConfig:
     crud: BaseCrud
     api_base_url: str
     google_client_id: str
+    login_redirect: str
     send_link_email: Callable[[str, str, str, str], None]
     get_db: Callable[[], sessionmaker]
     prefix: str = "/internal"
