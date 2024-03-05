@@ -19,7 +19,7 @@ def create_access_token(priv_key: str, algo: str, data: dict, expires_delta: Uni
     return encoded_jwt
 
 
-def decode_token(token: str, config: BaseRouterConfig):
+def decode_token(token: str, config: BaseRouterConfig, is_reset=False):
     credentials_exception = HTTPException(
         status_code=400,
         detail="Could not validate credentials",
@@ -27,7 +27,7 @@ def decode_token(token: str, config: BaseRouterConfig):
     payload = jwt.decode(token, config.pub_key, algorithms=[config.algorithm])
     username: str = payload.get("sub")
     msg_type: str = payload.get("type")
-    if username is None or msg_type != "reset":
+    if username is None or (msg_type != "reset" and not is_reset):
         raise credentials_exception
     token_data = TokenData(username=username)
     return token_data

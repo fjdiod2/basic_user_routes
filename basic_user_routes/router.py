@@ -114,7 +114,7 @@ def get_basic_user_router(config: BaseRouterConfig):
     @router.post("/reset_password/{token}")
     def reset_password(token: str, user_data: UserReset, db: Session = Depends(config.get_db)):
         try:
-            token_data = decode_token(token, config)
+            token_data = decode_token(token, config, is_reset=True)
         except JWTError:
             raise HTTPException(status_code=400, detail="Token validation error")
         except ExpiredSignatureError:
