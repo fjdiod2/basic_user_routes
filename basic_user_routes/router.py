@@ -18,7 +18,7 @@ def decode_google_token(token: str, google_client_id: str):
 
 
 def get_basic_user_router(config: BaseRouterConfig):
-    router = APIRouter(prefix=config.prefix)
+    router = APIRouter(prefix=config.prefix, include_in_schema=False)
 
     @router.post("/sign_in")
     def sign_in(user: BaseUser, db: Session = Depends(config.get_db)):
