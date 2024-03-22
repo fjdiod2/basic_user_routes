@@ -29,7 +29,7 @@ class ServiceProvider(str, Enum):
 
 class BaseUser(BaseModel):
     email: str
-    password: Optional[str]
+    password: Optional[str] = None
 
 
 class UserReset(BaseModel):
