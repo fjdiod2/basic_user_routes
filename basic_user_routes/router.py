@@ -87,10 +87,10 @@ def get_basic_user_router(config: BaseRouterConfig):
         if not user_db:
             config.crud.create_user(db=db, user=BaseUser(email=decoded["email"]), service_provider="google")
         access_token_expires = timedelta(minutes=config.expire_limit)
-        access_token = create_access_token(create_access_token(
+        access_token = create_access_token(
             priv_key=config.priv_key, algo=config.algorithm,
             data={"sub": decoded["email"]}, expires_delta=access_token_expires
-        ))
+        )
         return {"access_token": access_token, "token_type": "bearer"}
 
     @router.get("/reset_password")
