@@ -85,7 +85,7 @@ def get_basic_user_router(config: BaseRouterConfig):
         except ValueError:
             raise HTTPException(status_code=400, detail="Already registered with email")
         if not user_db:
-            config.crud.create_user(db=db, user=BaseUser(**decoded), service_provider="google")
+            config.crud.create_user(db=db, user=BaseUser(email=decoded["email"]), service_provider="google")
         access_token_expires = timedelta(minutes=config.expire_limit)
         access_token = create_access_token(create_access_token(
             priv_key=config.priv_key, algo=config.algorithm,

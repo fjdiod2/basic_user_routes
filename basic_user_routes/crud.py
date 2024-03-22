@@ -8,7 +8,7 @@ class BaseCrud(ABC):
     def authenticate_user(self, db, email: str, password: str) -> Optional[UserBase]:
         pass
 
-    def authenticate_user_google(self, db, user: BaseUser) -> Optional[UserBase]:
+    def authenticate_user_google(self, db, user_email: str) -> Optional[UserBase]:
         pass
 
     def create_user(self, db, user: BaseUser, service_provider: str):
